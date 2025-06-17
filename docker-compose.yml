@@ -1,28 +1,57 @@
 version: "3.7"
 
 services:
-  db:
-    image: postgres:17
-    environment:
-      POSTGRES_USER: odoo
-      POSTGRES_PASSWORD: odoo18@2024
-      POSTGRES_DB: postgres
-    volumes:
-      - odoo_pgdata:/var/lib/postgresql/data
-    restart: always
-
   odoo18:
     image: odoo:18.0
-    depends_on:
-      - db
     ports:
       - "10018:8069"
       - "20018:8072"
+    volumes:
+      - odoo_enterprise_data:/var/lib/odoo
+      - odoo_enterprise_config:/etc/odoo
+      - odoo_enterprise_addons:/mnt/enterprise-addons
     environment:
-      HOST: db
-      USER: odoo
-      PASSWORD: odoo18@2024
-    restart: always
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=a66160d9cca0f1b4a023fdc497db6b6e
+    networks:
+      - avanet
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.odoo_enterprise.rule=Host(`avaodoo.avainnova.com.co`)"
+        - "traefik.http.routers.odoo_enterprise.entrypoints=websecure"
+        - "traefik.http.routers.odoo_enterprise.tls=true"
+        - "traefik.http.routers.odoo_enterprise.service=odoo_enterprise"
+        - "traefik.http.routers.odoo_enterprise.tls.certresolver=letsencryptresolver"
+        - "traefik.http.services.odoo_enterprise.loadbalancer.server.port=8069"
+
+  db:
+    image: postgres:15
+    volumes:
+      - odoo_enterprise_db_data:/var/lib/postgresql/data/pgdata
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=a66160d9cca0f1b4a023fdc497db6b6e
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    networks:
+      - avanet
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
 
 volumes:
-  odoo_pgdata:
+  odoo_enterprise_data:
+  odoo_enterprise_config:
+  odoo_enterprise_addons:
+  odoo_enterprise_db_data:
+
+networks:
+  avanet:
+    external: true
+    attachable: true
