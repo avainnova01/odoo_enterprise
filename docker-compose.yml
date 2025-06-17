@@ -4,7 +4,7 @@ services:
   odoo_enterprise_app:
     image: minhng92/odoo-enterprise:18.0
     ports:
-      - "8079:8069"  # Acceso directo por puerto (útil para pruebas)
+      - "8089:8069"  # Acceso directo por puerto (útil para pruebas)
     volumes:
       - odoo_enterprise_data:/var/lib/odoo
       - odoo_enterprise_config:/etc/odoo
