@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   odoo_enterprise_app:
-    image: odoo:18
+    image: minhng92/odoo-enterprise:18.0
     ports:
       - "8079:8069"  # Acceso directo por puerto (útil para pruebas)
     volumes:
