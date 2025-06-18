@@ -14,6 +14,7 @@ services:
       - HOST=db
       - USER=odoo
       - PASSWORD=a66160d9cca0f1b4a023fdc497db6b6e
+      - ADMIN_PASSWORD=admin123
     networks:
       - avanet
     deploy:
