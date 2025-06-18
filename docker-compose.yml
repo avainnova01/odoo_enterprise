@@ -3,9 +3,9 @@ version: "3.7"
 services:
   odoo18:
     image: odoo:18.0
-    #ports:
-    #  - "10018:8069"
-    #  - "20018:8072"
+    ports:
+      - "10018:8069"
+      - "20018:8072"
     volumes:
       - odoo_enterprise_data:/var/lib/odoo
       - odoo_enterprise_config:/etc/odoo
