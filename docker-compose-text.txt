@@ -1,0 +1,42 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - odoo_enterprise_db_data:/var/lib/postgresql/data/pgdata
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=a66160d9cca0f1b4a023fdc497db6b6e
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    networks:
+      - avanet
+
+  odoo18:
+    image: odoo:18.0
+    ports:
+      - "10018:8069"
+      - "20018:8072"
+    volumes:
+      - odoo_enterprise_data:/var/lib/odoo
+      - odoo_enterprise_config:/etc/odoo
+      - odoo_enterprise_addons:/mnt/enterprise-addons
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=a66160d9cca0f1b4a023fdc497db6b6e
+    depends_on:
+      - db
+    networks:
+      - avanet
+
+volumes:
+  odoo_enterprise_data:
+  odoo_enterprise_config:
+  odoo_enterprise_addons:
+  odoo_enterprise_db_data:
+
+networks:
+  avanet:
+    driver: bridge

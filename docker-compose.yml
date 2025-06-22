@@ -9,7 +9,8 @@ services:
     volumes:
       - odoo_enterprise_data:/var/lib/odoo
       - odoo_enterprise_config:/etc/odoo
-      - odoo_enterprise_addons:/mnt/enterprise-addons
+      #- odoo_enterprise_addons:/mnt/enterprise-addons
+      - odoo18_ee:/mnt/enterprise-addons
     environment:
       - HOST=db
       - USER=odoo
@@ -49,8 +50,10 @@ services:
 volumes:
   odoo_enterprise_data:
   odoo_enterprise_config:
-  odoo_enterprise_addons:
+  # odoo_enterprise_addons:
   odoo_enterprise_db_data:
+  odoo18_ee:
+  external: true
 
 networks:
   avanet:
