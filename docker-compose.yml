@@ -53,7 +53,7 @@ volumes:
   # odoo_enterprise_addons:
   odoo_enterprise_db_data:
   odoo18_ee:
-  external: true
+    external: true
 
 networks:
   avanet:
